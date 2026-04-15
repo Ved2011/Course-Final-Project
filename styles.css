@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #111;
+    color: white;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 22px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-search input {
+    padding: 8px;
+}
+
+.nav-search button {
+    padding: 8px;
+    margin-left: 5px;
+}
+
+.hero {
+    min-height: 100vh;
+    background: url('https://source.unsplash.com/1600x900/?travel') no-repeat center/cover;
+}
+
+.overlay {
+    background: rgba(0,0,0,0.6);
+    min-height: 100vh;
+    color: white;
+    text-align: center;
+    padding: 120px 20px;
+}
+
+#results {
+    margin-top: 20px;
+    display: grid;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    color: black;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.book-btn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: orange;
+    border: none;
+    cursor: pointer;
+}
+
+.socials {
+    margin-top: 30px;
+}
+
+.socials a {
+    margin: 0 10px;
+    color: white;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 250px;
+    padding: 10px;
+}
