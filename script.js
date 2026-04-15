@@ -16,7 +16,7 @@ function getKeyword(input) {
     input = input.toLowerCase();
 
     if (input.includes("beach")) return "beach";
-    if (input.includes("temple")) return "temple", "taj mahal", "angkor wat";
+    if (input.includes("temple")) return "temples";
     if (input.includes("country")) return "country";
 
     return null;
