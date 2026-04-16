@@ -22,18 +22,30 @@ function getKeyword(input) {
     return null;
 }
 
+function normalize(word) {
+    word = word.toLowerCase().trim();
+
+    if (word.includes("beach")) return "beaches";
+    if (word.includes("temple")) return "temples";
+    if (word.includes("country")) return "countries";
+
+    return word;
+}
+
 function search() {
     const inputEl = document.getElementById("searchInput");
     const resultsDiv = document.getElementById("results");
 
     if (!inputEl || !resultsDiv) return;
 
-    const input = inputEl.value.toLowerCase().trim();
+    let input = inputEl.value.toLowerCase().trim();
 
     if (!input) {
         resultsDiv.innerHTML = "<p>Type something to search</p>";
         return;
     }
+
+    const normalizedInput = normalize(input);
 
     let results = [];
 
@@ -44,8 +56,8 @@ function search() {
 
         category.forEach(item => {
 
-            // ✅ CATEGORY MATCH (this fixes "beach")
-            if (key.toLowerCase().includes(input)) {
+            // ✅ CATEGORY MATCH (fixed for temple/beach/country)
+            if (key.toLowerCase().includes(normalizedInput)) {
                 results.push(item);
             }
 
@@ -65,7 +77,7 @@ function search() {
                     if (
                         city.name.toLowerCase().includes(input) ||
                         city.description.toLowerCase().includes(input) ||
-                        key.toLowerCase().includes(input)
+                        key.toLowerCase().includes(normalizedInput)
                     ) {
                         results.push(city);
                     }
@@ -75,7 +87,6 @@ function search() {
         });
     });
 
-    // remove duplicates
     results = [...new Map(results.map(item => [item.name, item])).values()];
 
     if (results.length === 0) {
@@ -95,7 +106,6 @@ function search() {
         </div>
     `).join("");
 }
-
 function clearSearch() {
     const inputEl = document.getElementById("searchInput");
     const resultsDiv = document.getElementById("results");
