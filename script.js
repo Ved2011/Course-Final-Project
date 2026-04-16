@@ -15,8 +15,8 @@ fetchData();
 function getKeyword(input) {
     input = input.toLowerCase();
 
-    if (input.includes("beach")) return "beaches";
-    if (input.includes("temple")) return "temples";
+    if (input.includes("beach")) return "beach";
+    if (input.includes("temple")) return "temple";
     if (input.includes("country")) return "country";
 
     return null;
