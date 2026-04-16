@@ -37,7 +37,6 @@ function search() {
 
     let results = [];
 
-    // loop through object properly
     Object.keys(data).forEach(key => {
         const category = data[key];
 
@@ -45,7 +44,12 @@ function search() {
 
         category.forEach(item => {
 
-            // case 1: normal places
+            // ✅ CATEGORY MATCH (this fixes "beach")
+            if (key.toLowerCase().includes(input)) {
+                results.push(item);
+            }
+
+            // ✅ NORMAL MATCH
             if (item.name && item.description) {
                 if (
                     item.name.toLowerCase().includes(input) ||
@@ -55,12 +59,13 @@ function search() {
                 }
             }
 
-            // case 2: countries with cities
+            // ✅ NESTED CITIES
             if (item.cities && Array.isArray(item.cities)) {
                 item.cities.forEach(city => {
                     if (
                         city.name.toLowerCase().includes(input) ||
-                        city.description.toLowerCase().includes(input)
+                        city.description.toLowerCase().includes(input) ||
+                        key.toLowerCase().includes(input)
                     ) {
                         results.push(city);
                     }
@@ -69,6 +74,9 @@ function search() {
 
         });
     });
+
+    // remove duplicates
+    results = [...new Map(results.map(item => [item.name, item])).values()];
 
     if (results.length === 0) {
         resultsDiv.innerHTML = "<p>No results found</p>";
@@ -82,7 +90,7 @@ function search() {
     resultsDiv.innerHTML = results.slice(0, 6).map(place => `
         <div class="card">
             <h3>${place.name}</h3>
-            <img src=${place.imageUrl}>
+            <img src="https://picsum.photos/400/300?random=${encodeURIComponent(place.name)}">
             <p>${place.description}</p>
         </div>
     `).join("");
