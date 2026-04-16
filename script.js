@@ -45,48 +45,54 @@ function search() {
         return;
     }
 
-    const normalizedInput = normalize(input);
-
     let results = [];
 
-    Object.keys(data).forEach(key => {
-        const category = data[key];
+    // 🔥 DIRECT CATEGORY MATCH (this is the real fix)
+    if (input.includes("temple")) {
+        results = data.temples || [];
+    } 
+    else if (input.includes("beach")) {
+        results = data.beaches || [];
+    } 
+    else if (input.includes("country")) {
+        if (data.countries) {
+            data.countries.forEach(country => {
+                if (country.cities) {
+                    results.push(...country.cities);
+                }
+            });
+        }
+    } 
+    else {
+        // 🔍 normal search (ANY word)
+        Object.values(data).forEach(category => {
+            if (!Array.isArray(category)) return;
 
-        if (!Array.isArray(category)) return;
+            category.forEach(item => {
 
-        category.forEach(item => {
-
-            // ✅ CATEGORY MATCH (fixed for temple/beach/country)
-            if (key.toLowerCase().includes(normalizedInput)) {
-                results.push(item);
-            }
-
-            // ✅ NORMAL MATCH
-            if (item.name && item.description) {
                 if (
-                    item.name.toLowerCase().includes(input) ||
-                    item.description.toLowerCase().includes(input)
+                    item.name?.toLowerCase().includes(input) ||
+                    item.description?.toLowerCase().includes(input)
                 ) {
                     results.push(item);
                 }
-            }
 
-            // ✅ NESTED CITIES
-            if (item.cities && Array.isArray(item.cities)) {
-                item.cities.forEach(city => {
-                    if (
-                        city.name.toLowerCase().includes(input) ||
-                        city.description.toLowerCase().includes(input) ||
-                        key.toLowerCase().includes(normalizedInput)
-                    ) {
-                        results.push(city);
-                    }
-                });
-            }
+                if (item.cities) {
+                    item.cities.forEach(city => {
+                        if (
+                            city.name.toLowerCase().includes(input) ||
+                            city.description.toLowerCase().includes(input)
+                        ) {
+                            results.push(city);
+                        }
+                    });
+                }
 
+            });
         });
-    });
+    }
 
+    // remove duplicates
     results = [...new Map(results.map(item => [item.name, item])).values()];
 
     if (results.length === 0) {
@@ -106,6 +112,7 @@ function search() {
         </div>
     `).join("");
 }
+
 function clearSearch() {
     const inputEl = document.getElementById("searchInput");
     const resultsDiv = document.getElementById("results");
